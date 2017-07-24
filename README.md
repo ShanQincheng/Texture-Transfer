@@ -53,37 +53,52 @@ IDE                                   Visual Studio 2017
 ### 思路
 #### 1、切割圖像
 以規則的網狀結構切割圖像,將每一個網孔看作一個 patch
+
 ![](http://www.codingstory.net/content/images/2017/07/Texture_Transfer.png)
 
 #### 2、找紋理最接近的 patch
 以圖像左上角的 patch 為例，在 texture picture 中找到與圖像左上角 patch 紋理最接近的 patch ( 注意, 尋找的 patch 長寬都與圖像左上角 patch 相同, 即網孔的長寬。)
+
 ![](http://www.codingstory.net/content/images/2017/07/QQ--20170723180300.png)
+
 **把找到的第一塊紋理最相似的 patch, 看作最終生成圖的基礎圖像**
 
 #### 3、水平拼貼
 同理，再從 texture picture 中找出與圖像左上角第二個 patch 紋理最接近的 patch
+
 ![](http://www.codingstory.net/content/images/2017/07/QQ--20170723180.png)
+
 把從 texture picture 中找到的第二塊紋理最接近的 patch 與找到的第一塊紋理最接近的 patch **(基礎圖像)**,使用水平拼貼貼合,貼合後成為新的，**一塊更大的基礎圖像**(==*馬賽克部分表示還未生成的區域*== )
+
 ![](http://www.codingstory.net/content/images/2017/07/QQ--20170724132355.png)
+
 以此類推，找到 N 個紋理最接近的 patch, 水平拼貼出第一條圖像**作為基礎圖像**
+
 ![](http://www.codingstory.net/content/images/2017/07/QQ--20170724143011.png)
 
 #### 4、垂直拼貼
 換行，同理找到 N 個紋理最接近的 patch, 水平拼貼出第二條圖像。
+
 ![](http://www.codingstory.net/content/images/2017/07/QQ--20170724151800.png)
+
 將這兩行 patch, 使用垂直拼貼，得到更大的基礎圖像
+
 ![](http://www.codingstory.net/content/images/2017/07/QQ--20170724152119.png)
 
 #### 5、重複 3 4 步驟得到最終圖像
 水平拼貼 patch 得到一條紋理最接近的圖像, 再用垂直拼貼得到一塊最接近的圖像。反复操作，得到最終的圖像。
+
 ![](http://www.codingstory.net/content/images/2017/07/QQ--20170724152717.png)
 
 ***
 
 ### 如何在 texture picture 中尋找最相似的 patch
 ###### 以原圖像左上角第一個 patch 為例
+
 ![](http://www.codingstory.net/content/images/2017/07/QQ--20170723180300.png)
+
 ###### ( 1 ) 在 texture picture 的左上角，切割出**尺寸相同**的一個 patch。
+
 ![](http://www.codingstory.net/content/images/2017/07/QQ--20170724170242.png)
 
 ###### ( 2 ) 將兩個 patch 轉為灰階圖像
