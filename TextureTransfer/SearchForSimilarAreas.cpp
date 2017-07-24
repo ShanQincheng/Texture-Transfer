@@ -36,17 +36,19 @@ Mat SearchForSimilarAreas(Mat currentPatch, Mat texturePic)
 	cvtColor(texturePic, grayTexturePic, CV_BGR2GRAY, 0);  // colored texture picture is transferred to gray picture
 
 
-	MinimumDifferenceLocation* minimumDifferenceLocationArray = (MinimumDifferenceLocation*)calloc(cols_need_be_compared, sizeof(MinimumDifferenceLocation));
+	
 	int minPixelRowPositon = 0;
 	int minPixelColPosition = 0;
 	int minimumDifferenceSum = INT_MAX;
-	for (int i = 0; i < rows_need_be_compared; i++)
+	int speedupValue = 3;
+	MinimumDifferenceLocation* minimumDifferenceLocationArray = (MinimumDifferenceLocation*)calloc(cols_need_be_compared, sizeof(MinimumDifferenceLocation));
+	for (int i = 0; i < rows_need_be_compared; i += speedupValue)
 	{
-		for (int j = 0; j < cols_need_be_compared; j++)
+		for (int j = 0; j < cols_need_be_compared; j ++)
 		{
-			for (int k = 0; k < patchRows; k++)  // calculate the sum of the gray scale difference for each possible similar patch
+			for (int k = 0; k < patchRows; k += speedupValue)  // calculate the sum of the gray scale difference for each possible similar patch
 			{
-				for (int l = 0; l < patchCols; l++)
+				for (int l = 0; l < patchCols; l += speedupValue)
 				{
 					gray_scale_difference_sum[i][j] += abs(grayCurrentPatch.at<uchar>(k, l) - grayTexturePic.at<uchar>(i + k, j + l)); // the gray scale difference
 				}
