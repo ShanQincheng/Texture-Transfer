@@ -10,6 +10,7 @@ int main(int argc, char** argv)
 	int patchSize = -1;
 	int overlappingSize = -1;
 
+	
 	for (int i = 0; i < 9; i++)
 	{
 		if (strcmp("-i", argv[i + 1]) == 0)
@@ -44,19 +45,19 @@ int main(int argc, char** argv)
 	}
 	
 	/*
-	infileName = "Texture_Transfer.bmp";
-	texturefileName = "Texture_Rice.bmp";
+	infileName = "Texture_Transfer_2.jpg";
+	texturefileName = "Texture_basket.jpg";
+	outfileName = "debug.bmp";
 	patchSize = 2;
 	overlappingSize = 1;
 	*/
+
 	Mat pic = imread(infileName);
 	Mat texturePic = imread(texturefileName);
 	Mat rowsPatch, rowsTempPatch, transferPic, transferTempPic;
 	
 	int stride = patchSize - overlappingSize;
 	int rowsPos = 0, colsPos = 0;
-
-
 
 	
 	for(int w = 0; w < pic.rows; w += stride) // makeup picture by vertical texture synthesis 
@@ -96,14 +97,14 @@ int main(int argc, char** argv)
 				else {
 					break;
 				}
-				/*
-					from one patch to one line picture according to one by one 
-					the most similar patch was found and then texture synthesis
-				*/	
+				
+				//	from one patch to one line picture according to one by one 
+				//	the most similar patch was found and then texture synthesis
+					
 				colsPatch = colsTempPatch.clone();  
 			}
 		}
-
+	
 		if (w == 0) // synthesis one line picture to the big picture
 		{
 			transferPic = colsPatch.clone();
@@ -118,7 +119,7 @@ int main(int argc, char** argv)
 			transferPic = transferTempPic.clone();
 		}
 	}
-	
+
 	namedWindow("picture window", WINDOW_AUTOSIZE);
 	namedWindow("texturePic window", WINDOW_AUTOSIZE);	
 	namedWindow("transferPic window", WINDOW_AUTOSIZE);
